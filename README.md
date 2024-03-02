@@ -11,7 +11,7 @@ Billiards on a spherical table, written using pygame.
 `SPACE`: shoot 
 
 `i`,`j`,`k`,`l`,`u`,`o`: camera orientation  
-`m`: reset camera  
+`m`: reset camera   
 
 
 
