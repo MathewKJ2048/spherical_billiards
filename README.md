@@ -1,5 +1,7 @@
 # spherical_billiards
-Billiards on a spherical table, written using pygame
+Billiards on a spherical table, written using pygame. 
+
+[Try it online]()
 
 ## Controls:
 
