@@ -1,16 +1,14 @@
 from vectors import *
 from conf import *
+from assets import *
 import random
 
 PLANE_RADIUS = radius+ball_radius
 
-
-def to_position(R,theta,phi):
-    r = Vector(0,0,0)
-    r.i = R*math.cos(theta)*math.sin(phi)
-    r.j = R*math.sin(theta)*math.sin(phi)
-    r.k = R*math.cos(phi)
-    return r
+time=0
+def get_time():
+    global time
+    return time
 
 tracer_set = True
 def get_tracer_set():
@@ -40,12 +38,21 @@ class Ball:
         self.r = r
         self.v = v
         self.color = color
+        self.active = True
 
-active_balls = []
-active_balls.append(Ball(WHITE,to_position(PLANE_RADIUS,0,math.pi/4),Vector(0,0,0))) # striker
+balls = []
+balls.append(Ball(WHITE,to_position(PLANE_RADIUS,0,math.pi/4),Vector(0,0,0))) # striker
+
+hole_positions = []
+hole_bases = []
+for o in hole_orientations:
+    r_h = to_position(PLANE_RADIUS,o[0],o[1])
+    hole_bases.append(random_basis(r_h))
+    hole_positions.append(r_h)
+
 
 def get_striker():
-    return active_balls[0]
+    return balls[0]
 velocity_tracer = Vector(0,0,0)
 
 
@@ -53,15 +60,7 @@ def get_tracer():
     return velocity_tracer
 def set_random_velocity():
     global velocity_tracer
-    vt = Vector(0,0,0)
-    vt.i = random.random()
-    vt.j = random.random()
-    vt.k = random.random()
-    vt_parallel, vt_perpendicular = components(vt, get_striker().r)
-    if vt_parallel.magnitude() != 0:
-        velocity_tracer = vt_parallel.normalize()
-    else:
-        set_random_velocity()
+    velocity_tracer = random_perpendicular(get_striker().r)
 
 set_random_velocity()
 
@@ -92,9 +91,42 @@ def collide(b1, b2):
     b1.v = v1_par + v2_perp
     b2.v = v2_par + v1_perp
 
+def reflect(b, r):
+    v_parallel, v_perpendicular = components(b.v, b.r - r)
+    b.v = v_parallel - v_perpendicular
+
 def evolve(dt):
     global velocity_tracer
-    for b in active_balls:
+    global time
+    time+=dt
+
+
+
+    active_balls = []
+    inactive_balls = []
+    for b in balls:
+        if b.active:
+            active_balls.append(b)
+        else:
+            inactive_balls.append(b)
+    
+    for b in inactive_balls:
+        new_r = (b.r + b.v*dt)
+        new_v = b.v
+        if new_r.magnitude() >= orbit_factor*PLANE_RADIUS:
+            new_r = new_r.normalize()*orbit_factor*PLANE_RADIUS
+            new_v = b.r.vector_product(b.v).vector_product(new_r).normalize() * b.v.magnitude()
+        b.r = new_r
+        b.v = new_v
+
+    for i in range(len(active_balls)):
+        b = active_balls[i]
+        for hr in hole_positions:
+            if (b.r-hr).magnitude() <= hole_radius+ball_radius:
+                if i!=0:
+                    b.active = False
+                else:
+                    reflect(b,hr)
         new_r = (b.r + b.v*dt).normalize()*PLANE_RADIUS
         mag = b.v.magnitude() - friction*dt
         if mag<=0:
@@ -115,7 +147,7 @@ def evolve(dt):
         if settle and get_tracer_set() == False:
             set_random_velocity()
             set_tracer()
-    pass
+
 
 
 
@@ -125,14 +157,14 @@ def init():
     a_d_d = math.sqrt(3)*a_d_s
     theta = math.pi/6
 
-    active_balls.append(Ball(BLUE,to_position(PLANE_RADIUS,0,0),Vector(0,0,0)))
+    balls.append(Ball(BLUE,to_position(PLANE_RADIUS,0,0),Vector(0,0,0)))
     for I in range(6):
         i = 2*I
         for j in [1,2]:
-            active_balls.append(Ball(RED,to_position(PLANE_RADIUS,theta*i,a_d_s*j),Vector(0,0,0)))
+            balls.append(Ball(RED,to_position(PLANE_RADIUS,theta*i,a_d_s*j),Vector(0,0,0)))
     for I in range(6):
         i = 2*I+1
-        active_balls.append(Ball(BLUE,to_position(PLANE_RADIUS,theta*i,a_d_d),Vector(0,0,0)))
+        balls.append(Ball(BLUE,to_position(PLANE_RADIUS,theta*i,a_d_d),Vector(0,0,0)))
 
 
 

@@ -39,6 +39,8 @@ async def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     launch()
+                if event.key == pygame.K_m:
+                    reset()
         
         pressed_keys = pygame.key.get_pressed()
         if  pressed_keys[pygame.K_a]:
@@ -53,6 +55,20 @@ async def main():
             decrease_power()
         if pressed_keys[pygame.K_w]:
             increase_power()
+        if pressed_keys[pygame.K_o]:
+            rotate_alpha()
+        if pressed_keys[pygame.K_u]:
+            rotate_alpha(True)
+        if pressed_keys[pygame.K_l]:
+            rotate_beta()
+        if pressed_keys[pygame.K_j]:
+            rotate_beta(True)
+        if pressed_keys[pygame.K_i]:
+            rotate_gamma()
+        if pressed_keys[pygame.K_k]:
+            rotate_gamma(True)
+        
+
                     
 
         dt = c.tick(max_frame_rate)

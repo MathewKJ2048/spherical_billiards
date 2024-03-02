@@ -1,20 +1,14 @@
+import math
+
 height = 800
 width = 800
 
-radius = 360
-ball_radius =12
+radius = 300
+ball_radius =10
+hole_radius = 4*ball_radius
+hole_rotator_radius = 0.5*ball_radius
 
-friction = 0.00005
-
-BACKGROUND = (0,0,0)
-TURF = (0,150,0)
-WHITE = (255,255,255)
-RED = (190,0,0)
-BLUE = (0,0,190)
-
-TRACER = (255,255,0)
-TRACER_RADII = [4,3,2,1]
-TRACER_POSITIONS = [4*ball_radius,8*ball_radius,12*ball_radius, 16* ball_radius] # at max power
+friction = 0.0001
 
 max_frame_rate = 60
 
@@ -24,5 +18,22 @@ POWER_SENSITIVITY = 0.01
 
 LAUNCH_VELOCITY = 1
 
-GRID_LINES = 8 # number of great circles along a direction
-GRID_LINE_COLOR = (0,100,0)
+CAMERA_SENSITIVITY = 0.1
+
+orbit_factor = 1.2
+
+right = math.pi/2
+hole_orientations = []
+for i in range(4):
+    # theta, phi
+    hole_orientations.append((right*i,right))
+
+SPIN = 0.001
+
+NUM_RING = 20
+
+TRACER_RADII = [8,7,6,5,4,4,4,4,4,4,4,4]
+TRACER_POSITIONS = [4,8,12,16,20,24,28,32,36,40,44,48] # at max power
+for i in range(len(TRACER_POSITIONS)):
+    TRACER_POSITIONS[i]*=ball_radius
+

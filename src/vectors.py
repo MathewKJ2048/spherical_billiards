@@ -1,4 +1,5 @@
 import math
+import random
 
 class Vector:
     def __init__(self,i,j,k):
@@ -44,3 +45,39 @@ def components(v,n):
     v_parallel = v - v_perpendicular
     return v_parallel, v_perpendicular
 
+def to_position(R,theta,phi):
+    r = Vector(0,0,0)
+    r.i = R*math.cos(theta)*math.sin(phi)
+    r.j = R*math.sin(theta)*math.sin(phi)
+    r.k = R*math.cos(phi)
+    return r
+
+def to_spherical_coordinates(r):
+    x,y,z = r.i,r.j,r.k
+    R = r.magnitude()
+    theta = math.atan2(y,x)
+    phi = math.atan2((y**2+x**2)**(0.5),z)
+    return R, theta, phi
+
+def random_perpendicular(v):
+    vt = Vector(0,0,0)
+    vt.i = random.random()
+    vt.j = random.random()
+    vt.k = random.random()
+    vt_parallel, vt_perpendicular = components(vt, v)
+    if vt_parallel.magnitude()==0:
+        return random_perpendicular(v)
+    return vt_parallel.normalize()
+
+def random_basis(v):
+    vx = random_perpendicular(v)
+    vy = vx.vector_product(v).normalize()
+    return (vx, vy)
+
+def ring(v, basis, number, radius, offset): # list of vectors radial to v, all perpendicular to v, constant angular difference
+     vx, vy = basis
+     ring = []
+     for i in range(number):
+        theta = math.pi*2*i/number + offset
+        ring.append((vx*math.cos(theta)+vy*math.sin(theta))*radius)
+     return ring
