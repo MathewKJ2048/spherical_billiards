@@ -1,2 +1,17 @@
 # spherical_billiards
-Billiards on a spherical table
+Billiards on a spherical table, written using pygame
+
+## Controls:
+
+`w`,`s`: shot power  
+`a`,`d`: shot direction  
+`q`, `e`: fine control of shot direction  
+`SPACE`: shoot 
+
+`i`,`j`,`k`,`l`,`u`,`o`: camera orientation  
+`m`: reset camera  
+
+
+
+
+
