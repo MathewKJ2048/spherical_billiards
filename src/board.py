@@ -126,7 +126,8 @@ def evolve(dt):
                 if i!=0:
                     b.active = False
                 else:
-                    reflect(b,hr)
+                    if b.v.scalar_product(hr-b.r) > 0:
+                        reflect(b,hr)
         new_r = (b.r + b.v*dt).normalize()*PLANE_RADIUS
         mag = b.v.magnitude() - friction*dt
         if mag<=0:

@@ -1,7 +1,9 @@
 # spherical_billiards
 Billiards on a spherical table, written using pygame. 
 
-[Try it online]()
+![](./doc/screenshot.png)
+
+Try it online - [https://mathewkj2048.github.io/spherical_billiards](https://mathewkj2048.github.io/spherical_billiards)
 
 ## Controls:
 
@@ -12,6 +14,14 @@ Billiards on a spherical table, written using pygame.
 
 `i`,`j`,`k`,`l`,`u`,`o`: camera orientation  
 `m`: reset camera   
+
+## Installation:
+
+Clone the repository and run the following command:
+
+```
+python ./src/main.py
+```
 
 
 
