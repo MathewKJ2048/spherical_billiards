@@ -68,14 +68,14 @@ def render():
     spheres = sorted(spheres,key=key)
 
     for s in spheres:
-        pygame.draw.circle(surface, s.color, get_surface_coord(s.r.i,s.r.j), s.radius)
-        pygame.draw.circle(surface, get_border(s.color), get_surface_coord(s.r.i, s.r.j), s.radius, width=BORDER_WIDTH)
+        pygame.draw.circle(surface, s.color, get_surface_coord(s.r.i,s.r.j), int(s.radius*SCALE))
+        pygame.draw.circle(surface, get_border(s.color), get_surface_coord(s.r.i, s.r.j), int(s.radius*SCALE), width=BORDER_WIDTH)
 
 
     return surface
 
 def get_surface_coord(x,y):
-    return width/2+x, height/2-y
+    return width/2+x*SCALE, height/2-y*SCALE
 
 def rotate(u, v, theta):
     return u*math.cos(theta)-v*math.sin(theta), u*math.sin(theta)+v*math.cos(theta)

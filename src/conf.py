@@ -1,7 +1,8 @@
 import math
 
-height = 800
-width = 800
+height = 1000
+width = 1000
+SCALE = 1.3
 
 radius = 300
 ball_radius =10
